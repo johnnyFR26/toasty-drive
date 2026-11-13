@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: DynamoDB tables for My Driver
+
+Resources:
+  ItemsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: MyDriverItems
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: ownerParent
+          AttributeType: S
+        - AttributeName: sortKey
+          AttributeType: S
+        - AttributeName: parentId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: ByOwnerParent
+          KeySchema:
+            - AttributeName: ownerParent
+              KeyType: HASH
+            - AttributeName: sortKey
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: ByParentId
+          KeySchema:
+            - AttributeName: parentId
+              KeyType: HASH
+            - AttributeName: sortKey
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+  SharesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: MyDriverShares
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: ownerId
+          AttributeType: S
+        - AttributeName: itemId
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: ByOwnerId
+          KeySchema:
+            - AttributeName: ownerId
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: ByItemId
+          KeySchema:
+            - AttributeName: itemId
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+Outputs:
+  ItemsTableName:
+    Value: !Ref ItemsTable
+  ItemsTableArn:
+    Value: !GetAtt ItemsTable.Arn
+  SharesTableName:
+    Value: !Ref SharesTable
+  SharesTableArn:
+    Value: !GetAtt SharesTable.Arn

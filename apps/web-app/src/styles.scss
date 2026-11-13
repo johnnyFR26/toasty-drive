@@ -1,0 +1,21 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--tui-font-text);
+  background: var(--tui-background-base);
+  color: var(--tui-text-primary);
+}
+
+a {
+  color: var(--tui-text-action);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

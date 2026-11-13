@@ -1,0 +1,256 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+// --- Layout ---
+
+.drive-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+// --- Sidebar ---
+
+.sidebar {
+  background: var(--tui-background-base-alt);
+  border-right: 1px solid var(--tui-border-normal);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.5rem;
+
+  tui-icon {
+    font-size: 1.5rem;
+    color: var(--tui-text-action);
+  }
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--tui-text-primary);
+}
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-btn {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.upload-label {
+  display: contents;
+  cursor: pointer;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--tui-radius-m);
+  text-decoration: none !important;
+
+  &.active {
+    background: var(--tui-background-neutral-1);
+    font-weight: 600;
+  }
+
+  &:hover {
+    background: var(--tui-background-neutral-1);
+  }
+}
+
+// --- Main ---
+
+.main-content {
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+}
+
+// --- Breadcrumbs ---
+
+.breadcrumb-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none !important;
+}
+
+.breadcrumb-sep {
+  color: var(--tui-text-tertiary);
+  margin: 0 0.25rem;
+}
+
+// --- Loading ---
+
+.loading-indicator {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+// --- Empty State ---
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: var(--tui-text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--tui-text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.empty-hint {
+  color: var(--tui-text-secondary);
+  margin: 0;
+}
+
+// --- File Table ---
+
+.file-table {
+  background: var(--tui-background-base);
+  border-radius: var(--tui-radius-l);
+  border: 1px solid var(--tui-border-normal);
+  overflow: hidden;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 100px 160px 140px;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--tui-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--tui-border-normal);
+  background: var(--tui-background-base-alt);
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 160px 140px;
+  padding: 0.625rem 1rem;
+  align-items: center;
+  border-bottom: 1px solid var(--tui-border-normal);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--tui-background-neutral-1);
+    cursor: default;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.col {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.col-actions {
+  display: flex;
+  gap: 0.125rem;
+  justify-content: flex-end;
+}
+
+.item-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-folder {
+  color: var(--tui-text-action);
+}
+
+.icon-file {
+  color: var(--tui-text-secondary);
+}
+
+.name-link {
+  text-decoration: none !important;
+  font-weight: 500;
+}
+
+.name-text {
+  font-size: 0.875rem;
+  color: var(--tui-text-primary);
+}
+
+.text-muted {
+  font-size: 0.8125rem;
+  color: var(--tui-text-secondary);
+}
+
+// --- Upload Toast ---
+
+.upload-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--tui-background-elevation-1);
+  border: 1px solid var(--tui-border-normal);
+  border-radius: var(--tui-radius-l);
+  padding: 1rem 1.25rem;
+  min-width: 300px;
+  box-shadow: var(--tui-shadow-medium);
+  z-index: 900;
+}
+
+.upload-toast-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--tui-text-primary);
+  margin-bottom: 0.5rem;
+
+  tui-icon {
+    color: var(--tui-text-action);
+  }
+}
