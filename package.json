@@ -2,7 +2,13 @@
   "name": "@my-driver-temp/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:web": "nx build web-app",
+    "build:api": "nx build api",
+    "build:lambda": "set BUILD_TARGET=lambda&& nx build api --skip-nx-cache",
+    "deploy": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1",
+    "deploy:skip-build": "powershell -ExecutionPolicy Bypass -File scripts/deploy.ps1 -SkipBuild"
+  },
   "private": true,
   "packageManager": "npm@10.9.9",
   "dependencies": {

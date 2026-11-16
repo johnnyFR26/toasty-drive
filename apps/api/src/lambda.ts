@@ -22,7 +22,7 @@ async function bootstrap(): Promise<Handler> {
 
   app.enableCors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || ['*'],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });
 
