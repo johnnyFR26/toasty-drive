@@ -18,23 +18,16 @@
         Nova Pasta
       </button>
 
-      <label class="upload-label">
-        <button
-          tuiButton
-          appearance="secondary"
-          size="m"
-          class="sidebar-btn"
-        >
-          <tui-icon icon="@tui.upload" />
-          Upload
-        </button>
-        <input
-          type="file"
-          multiple
-          hidden
-          (change)="onFileSelected($event)"
-        />
-      </label>
+      <button
+        tuiButton
+        appearance="secondary"
+        size="m"
+        class="sidebar-btn"
+        (click)="openUploadDialog()"
+      >
+        <tui-icon icon="@tui.upload" />
+        Upload
+      </button>
     </div>
 
     <nav class="sidebar-nav">
@@ -130,11 +123,28 @@
           <div class="table-row">
             <span class="col col-name item-name">
               <tui-icon [icon]="getFileIcon(file)" class="icon-file" />
-              <span class="name-text">{{ file.name }}</span>
+              @if (isImage(file)) {
+                <button tuiLink class="name-link" (click)="openImagePreview(file)">
+                  {{ file.name }}
+                </button>
+              } @else {
+                <span class="name-text">{{ file.name }}</span>
+              }
             </span>
             <span class="col col-size text-muted">{{ file.size | fileSize }}</span>
             <span class="col col-date text-muted">{{ file.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
             <span class="col col-actions">
+              @if (isImage(file)) {
+                <button
+                  tuiButton
+                  appearance="flat"
+                  size="s"
+                  title="Visualizar"
+                  (click)="openImagePreview(file)"
+                >
+                  <tui-icon icon="@tui.eye" />
+                </button>
+              }
               <button
                 tuiButton
                 appearance="flat"
@@ -170,13 +180,3 @@
   </main>
 </div>
 
-<!-- Upload progress toast -->
-@if (uploading()) {
-  <div class="upload-toast">
-    <div class="upload-toast-header">
-      <tui-icon icon="@tui.upload-cloud" />
-      <span>{{ uploadFileName() }}</span>
-    </div>
-    <progress tuiProgressBar [max]="100" [value]="uploadProgress()"></progress>
-  </div>
-}

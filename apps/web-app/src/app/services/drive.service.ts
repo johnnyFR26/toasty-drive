@@ -62,10 +62,10 @@ export class DriveService {
     );
   }
 
-  async uploadToS3(url: string, file: File): Promise<void> {
+  async uploadToS3(url: string, file: File, mimeType: string): Promise<void> {
     await firstValueFrom(
       this.http.put(url, file, {
-        headers: new HttpHeaders({ 'Content-Type': file.type }),
+        headers: new HttpHeaders({ 'Content-Type': mimeType }),
       }),
     );
   }

@@ -51,10 +51,6 @@
   justify-content: flex-start;
 }
 
-.upload-label {
-  display: contents;
-  cursor: pointer;
-}
 
 .sidebar-nav {
   display: flex;
@@ -226,31 +222,3 @@
   color: var(--tui-text-secondary);
 }
 
-// --- Upload Toast ---
-
-.upload-toast {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  background: var(--tui-background-elevation-1);
-  border: 1px solid var(--tui-border-normal);
-  border-radius: var(--tui-radius-l);
-  padding: 1rem 1.25rem;
-  min-width: 300px;
-  box-shadow: var(--tui-shadow-medium);
-  z-index: 900;
-}
-
-.upload-toast-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--tui-text-primary);
-  margin-bottom: 0.5rem;
-
-  tui-icon {
-    color: var(--tui-text-action);
-  }
-}

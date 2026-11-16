@@ -21,6 +21,14 @@ import {
   ShareDialog,
   type ShareDialogData,
 } from '../../dialogs/share-dialog';
+import {
+  UploadDialog,
+  type UploadDialogData,
+} from '../../dialogs/upload-dialog';
+import {
+  ImagePreviewDialog,
+  type ImagePreviewData,
+} from '../../dialogs/image-preview-dialog';
 
 @Component({
   selector: 'app-drive',
@@ -46,11 +54,6 @@ export class Drive implements OnInit {
   breadcrumbs = signal<Item[]>([]);
   loading = signal(false);
   currentFolderId = signal('root');
-
-  // Upload state
-  uploading = signal(false);
-  uploadFileName = signal('');
-  uploadProgress = signal(0);
 
   folders = computed(() =>
     this.items()
@@ -142,53 +145,23 @@ export class Drive implements OnInit {
 
   // --- Upload ---
 
-  async onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const fileList = input.files;
-    if (!fileList?.length) return;
+  openUploadDialog() {
+    const parentId =
+      this.currentFolderId() === 'root'
+        ? undefined
+        : this.currentFolderId();
 
-    for (let i = 0; i < fileList.length; i++) {
-      await this.uploadFile(fileList[i]);
-    }
-
-    input.value = '';
-    this.loadItems(this.currentFolderId());
-  }
-
-  private async uploadFile(file: File) {
-    this.uploadFileName.set(file.name);
-    this.uploadProgress.set(0);
-    this.uploading.set(true);
-
-    try {
-      const parentId =
-        this.currentFolderId() === 'root'
-          ? undefined
-          : this.currentFolderId();
-
-      const { uploadUrl } = await this.driveService.requestUpload(
-        file.name,
-        file.type || 'application/octet-stream',
-        file.size,
-        parentId,
-      );
-
-      this.uploadProgress.set(40);
-      await this.driveService.uploadToS3(uploadUrl, file);
-      this.uploadProgress.set(100);
-
-      this.notifications
-        .open(`"${file.name}" enviado com sucesso`, {
-          appearance: 'positive',
-        })
-        .subscribe();
-    } catch {
-      this.notifications
-        .open(`Erro ao enviar "${file.name}"`, { appearance: 'negative' })
-        .subscribe();
-    } finally {
-      setTimeout(() => this.uploading.set(false), 800);
-    }
+    this.dialogs
+      .open<boolean>(new PolymorpheusComponent(UploadDialog), {
+        data: { parentId } satisfies UploadDialogData,
+        dismissible: true,
+        size: 'm',
+      })
+      .subscribe((uploaded) => {
+        if (uploaded) {
+          this.loadItems(this.currentFolderId());
+        }
+      });
   }
 
   // --- Download ---
@@ -202,6 +175,18 @@ export class Drive implements OnInit {
         .open('Erro ao gerar link de download', { appearance: 'negative' })
         .subscribe();
     }
+  }
+
+  // --- Image Preview ---
+
+  openImagePreview(item: Item) {
+    this.dialogs
+      .open<void>(new PolymorpheusComponent(ImagePreviewDialog), {
+        data: { itemId: item.id, itemName: item.name } satisfies ImagePreviewData,
+        dismissible: true,
+        size: 'l',
+      })
+      .subscribe();
   }
 
   // --- Share ---
@@ -247,6 +232,10 @@ export class Drive implements OnInit {
   }
 
   // --- Helpers ---
+
+  isImage(item: Item): boolean {
+    return item.mimeType?.startsWith('image/') ?? false;
+  }
 
   getFileIcon(item: Item): string {
     if (item.type === 'folder') return '@tui.folder';
